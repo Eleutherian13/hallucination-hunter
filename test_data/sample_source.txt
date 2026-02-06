@@ -1,0 +1,36 @@
+# Clinical Guidelines for Type 2 Diabetes Management
+## American Diabetes Association Standards of Care 2024
+
+### Overview and Diagnosis
+
+Type 2 diabetes mellitus is a chronic metabolic disorder characterized by hyperglycemia resulting from defects in insulin secretion, insulin action, or both. Early diagnosis and comprehensive management are essential for preventing complications.
+
+Diagnosis of diabetes is made when fasting plasma glucose is ≥126 mg/dL, 2-hour plasma glucose during OGTT is ≥200 mg/dL, HbA1c is ≥6.5%, or random plasma glucose is ≥200 mg/dL with classic symptoms of hyperglycemia.
+
+### Annual Screening and Monitoring
+
+The patient should be evaluated for diabetes complications at the time of diagnosis and annually thereafter. Key areas include retinopathy screening through dilated eye exam, nephropathy assessment via urine albumin-to-creatinine ratio and eGFR, neuropathy evaluation through comprehensive foot exam, and cardiovascular risk assessment.
+
+### Glycemic Targets
+
+HbA1c target should be individualized. For most non-pregnant adults, a reasonable HbA1c goal is <7.0%. A more stringent goal of <6.5% may be appropriate for selected individuals if achievable without significant hypoglycemia. Less stringent goals of <8.0% may be appropriate for patients with limited life expectancy or advanced complications.
+
+### First-Line Therapy
+
+Metformin remains the first-line pharmacological agent unless contraindicated. It should be initiated at the time of diagnosis along with lifestyle modifications including medical nutrition therapy and physical activity. The typical starting dose is 500mg daily, titrated up to 2000mg daily as tolerated.
+
+### Cardiovascular Considerations
+
+GLP-1 receptor agonists and SGLT2 inhibitors have demonstrated cardiovascular and renal protective effects and should be considered for patients with established cardiovascular disease, heart failure, or chronic kidney disease. These agents provide benefits independent of glucose lowering.
+
+### Blood Pressure Management
+
+Blood pressure targets for patients with diabetes should be <130/80 mmHg. First-line antihypertensive agents include ACE inhibitors or ARBs, especially for patients with albuminuria. Combination therapy is often required to achieve target blood pressure.
+
+### Lipid Management
+
+Statin therapy is recommended for all adults with diabetes aged 40-75 years. High-intensity statin therapy should be used for patients with established ASCVD. For primary prevention in patients with diabetes and ASCVD risk factors, moderate-intensity statin therapy is recommended.
+
+### Patient Education
+
+All patients should receive diabetes self-management education and support (DSMES) at diagnosis and throughout their care. Key components include healthy eating patterns, physical activity, medication adherence, blood glucose monitoring, problem solving, healthy coping, and risk reduction behaviors.

@@ -1,0 +1,13 @@
+Based on the ADA Guidelines for Type 2 Diabetes Management 2024, here is a summary of the key recommendations:
+
+For diagnosis, diabetes is confirmed when HbA1c is ≥6.5% or fasting glucose is ≥126 mg/dL. Patients should be screened for complications annually including retinopathy and nephropathy.
+
+The recommended HbA1c target for most adults is <7.0%, though this should be individualized based on patient factors.
+
+Metformin is the recommended first-line medication for Type 2 Diabetes unless there are contraindications. It should be started at diagnosis along with lifestyle changes.
+
+Blood pressure targets for diabetic patients should be <140/90 mmHg according to the guidelines. ACE inhibitors or ARBs are preferred for patients with kidney disease.
+
+Sulfonylureas are the preferred second-line agents for all diabetic patients regardless of cardiovascular history.
+
+All patients aged 40-75 should receive statin therapy for cardiovascular protection. Diabetes self-management education should be provided at diagnosis.

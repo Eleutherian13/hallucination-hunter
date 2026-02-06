@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hallucination-hunter"
+version = "2.0.0"
+description = "AI-assisted fact-checking and attribution system for LLM-generated text verification"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "DataForge Team", email = "team@dataforge.com"}
+]
+keywords = [
+    "hallucination-detection",
+    "fact-checking",
+    "llm-verification",
+    "ai-safety",
+    "nli",
+    "rag"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+homepage = "https://github.com/dataforge/hallucination-hunter"
+documentation = "https://github.com/dataforge/hallucination-hunter/docs"
+repository = "https://github.com/dataforge/hallucination-hunter"
+
+[project.scripts]
+hallucination-hunter = "src.main:main"
+hh-api = "src.api.main:run_api"
+hh-ui = "src.ui.app:run_ui"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | models
+    | data
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = [".git", ".venv", "models", "data"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = ["models/", "data/", "logs/"]
+
+[tool.pytest.ini_options]
+testpaths = ["src/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = "-v --cov=src --cov-report=html --cov-report=term-missing"

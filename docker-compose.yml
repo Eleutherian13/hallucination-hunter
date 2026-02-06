@@ -1,0 +1,72 @@
+version: "3.8"
+
+services:
+  # Main API Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hallucination-hunter-api
+    command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./cache:/app/cache
+    environment:
+      - APP_ENV=development
+      - DEBUG=true
+      - DATABASE_URL=sqlite:///./data/hallucination_hunter.db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - hallucination-network
+    restart: unless-stopped
+
+  # Streamlit UI Service
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hallucination-hunter-ui
+    command: streamlit run src/ui/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./cache:/app/cache
+    environment:
+      - APP_ENV=development
+      - DEBUG=true
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    networks:
+      - hallucination-network
+    restart: unless-stopped
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: hallucination-hunter-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - hallucination-network
+    restart: unless-stopped
+
+networks:
+  hallucination-network:
+    driver: bridge
+
+volumes:
+  redis-data:
