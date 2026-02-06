@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"pages\\\\results.tsx -> @/lib/api\":{\"id\":\"pages\\\\results.tsx -> @/lib/api\",\"files\":[\"static/chunks/src_lib_api_ts.js\"]}}"

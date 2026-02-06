@@ -2,5 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/verify": "pages/verify.js"
+  "/verify": "pages/verify.js",
+  "/": "pages/index.js",
+  "/results": "pages/results.js",
+  "/pipeline": "pages/pipeline.js",
+  "/benchmarks": "pages/benchmarks.js"
 }
