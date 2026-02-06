@@ -105,10 +105,10 @@ export default function VerifyPage() {
         sourceFiles,
         llmOutput,
         {
-          confidence_threshold: settings.confidenceThreshold,
-          enable_corrections: settings.enableCorrections,
-          enable_semantic_matching: settings.enableSemanticMatching,
-          max_claims: settings.maxClaimsPerDocument,
+          confidenceThreshold: settings.confidenceThreshold,
+          enableCorrections: settings.enableCorrections,
+          enableSemanticMatching: settings.enableSemanticMatching,
+          maxClaimsPerDocument: settings.maxClaimsPerDocument,
         },
         (prog, step) => {
           setProgress(Math.max(progress, prog));

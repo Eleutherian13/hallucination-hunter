@@ -526,7 +526,12 @@ function CitationReportView({
   sourceDoc: SourceDocument;
   onClaimClick: (claim: Claim) => void;
 }) {
-  if (claims.length === 0) {
+  // Filter only verified claims that have source snippets
+  const verifiedClaims = claims.filter(
+    (c) => c.status === "verified" && c.sourceSnippet
+  );
+
+  if (verifiedClaims.length === 0) {
     return (
       <div className="text-center py-12">
         <AlertCircle className="w-12 h-12 text-dark-muted mx-auto mb-4" />
@@ -548,11 +553,11 @@ function CitationReportView({
         <Quote className="w-5 h-5 text-verified" />
         <h3 className="font-semibold text-dark-text">Direct Citations</h3>
         <span className="text-sm text-dark-muted">
-          ({claims.length} verified claims)
+          ({verifiedClaims.length} verified claims)
         </span>
       </div>
 
-      {claims.map((claim) => (
+      {verifiedClaims.map((claim) => (
         <div
           key={claim.id}
           className="p-4 rounded-xl bg-verified/10 border border-verified/30 cursor-pointer hover:bg-verified/15 transition-colors"
@@ -585,7 +590,12 @@ function CitationReportView({
 }
 
 function CorrectionsView({ claims }: { claims: Claim[] }) {
-  if (claims.length === 0) {
+  // Filter only hallucinated claims that have corrections
+  const hallucinatedClaims = claims.filter(
+    (c) => c.status === "hallucination" && c.correction
+  );
+
+  if (hallucinatedClaims.length === 0) {
     return (
       <div className="text-center py-12">
         <CheckCircle className="w-12 h-12 text-verified mx-auto mb-4" />
@@ -610,11 +620,11 @@ function CorrectionsView({ claims }: { claims: Claim[] }) {
         <Edit3 className="w-5 h-5 text-hallucination" />
         <h3 className="font-semibold text-dark-text">Suggested Corrections</h3>
         <span className="text-sm text-dark-muted">
-          ({claims.length} issues found)
+          ({hallucinatedClaims.length} issues found)
         </span>
       </div>
 
-      {claims.map((claim) => (
+      {hallucinatedClaims.map((claim) => (
         <div
           key={claim.id}
           className="p-4 rounded-xl bg-dark-bg/50 border border-dark-border"
