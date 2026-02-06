@@ -125,14 +125,39 @@ export default function VerifyPage() {
 
       // Store result with ID-based key for results page
       console.log("Storing verification result:", result);
-      sessionStorage.setItem(
-        `verification_result_${result.id}`,
-        JSON.stringify(result),
-      );
-      sessionStorage.setItem(
-        "latestVerificationResult",
-        JSON.stringify(result),
-      );
+      
+      try {
+        // Clean up old verification results to prevent quota errors
+        const keysToRemove: string[] = [];
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          if (key && key.startsWith('verification_result_')) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => sessionStorage.removeItem(key));
+        
+        // Create lightweight version without full document content to save space
+        const lightweightResult = {
+          ...result,
+          sourceDocuments: result.sourceDocuments.map(doc => ({
+            ...doc,
+            content: '', // Remove full content, keep only paragraphs
+          })),
+        };
+        
+        sessionStorage.setItem(
+          `verification_result_${result.id}`,
+          JSON.stringify(lightweightResult),
+        );
+        sessionStorage.setItem(
+          "latestVerificationResult",
+          JSON.stringify(lightweightResult),
+        );
+      } catch (storageError: any) {
+        console.error("Storage error:", storageError);
+        // If storage fails, continue anyway - result is already on backend
+      }
 
       await new Promise((resolve) => setTimeout(resolve, 500));
       console.log("Navigating to results page with ID:", result.id);

@@ -194,29 +194,50 @@ export default function ResultsPage() {
   const sourceViewerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Load actual result from sessionStorage
-    const resultId = router.query.id as string;
-    let storedResult = null;
-
-    if (resultId) {
-      storedResult = sessionStorage.getItem(`verification_result_${resultId}`);
-    }
-
-    // Fallback to latest result if ID-based lookup fails
-    if (!storedResult) {
-      storedResult = sessionStorage.getItem("latestVerificationResult");
-    }
-
-    if (storedResult) {
-      try {
-        const parsedResult = JSON.parse(storedResult);
-        console.log("Loaded verification result:", parsedResult);
-        setResult(parsedResult);
-      } catch (error) {
-        console.error("Failed to parse stored result:", error);
+    const loadResult = async () => {
+      const resultId = router.query.id as string;
+      
+      // Try sessionStorage first
+      let storedResult = null;
+      if (resultId) {
+        storedResult = sessionStorage.getItem(`verification_result_${resultId}`);
       }
-    } else {
+      
+      // Fallback to latest result if ID-based lookup fails
+      if (!storedResult) {
+        storedResult = sessionStorage.getItem("latestVerificationResult");
+      }
+      
+      if (storedResult) {
+        try {
+          const parsedResult = JSON.parse(storedResult);
+          console.log("Loaded verification result from sessionStorage:", parsedResult);
+          setResult(parsedResult);
+          return;
+        } catch (error) {
+          console.error("Failed to parse stored result:", error);
+        }
+      }
+      
+      // If sessionStorage fails, try to fetch from backend API
+      if (resultId && resultId !== "demo-result-001") {
+        try {
+          console.log("Fetching result from backend API:", resultId);
+          const { getVerificationResult } = await import("@/lib/api");
+          const apiResult = await getVerificationResult(resultId);
+          console.log("Loaded verification result from API:", apiResult);
+          setResult(apiResult);
+          return;
+        } catch (error) {
+          console.error("Failed to fetch result from API:", error);
+        }
+      }
+      
       console.warn("No stored result found, using demo data");
+    };
+    
+    if (router.isReady) {
+      loadResult();
     }
   }, [router.query.id, router.isReady]);
 
