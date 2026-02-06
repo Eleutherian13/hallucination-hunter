@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Layout } from '@/components/layout';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Layout } from "@/components/layout";
 import {
   Settings as SettingsIcon,
   Sliders,
@@ -14,7 +14,7 @@ import {
   Save,
   RefreshCw,
   Check,
-} from 'lucide-react';
+} from "lucide-react";
 
 const defaultSettings = {
   confidenceThreshold: 0.7,
@@ -22,7 +22,7 @@ const defaultSettings = {
   enableSemanticMatching: true,
   showUnverifiable: true,
   maxClaimsPerDocument: 50,
-  theme: 'dark',
+  theme: "dark",
   showConfidencePercent: true,
   enableClickToScroll: true,
   highlightSource: true,
@@ -37,32 +37,35 @@ export default function SettingsPage() {
 
   // Load settings from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem('verification_settings');
+    const stored = localStorage.getItem("verification_settings");
     if (stored) {
       try {
         setSettings(JSON.parse(stored));
       } catch (error) {
-        console.error('Failed to load settings:', error);
+        console.error("Failed to load settings:", error);
       }
     }
   }, []);
 
   const handleSave = () => {
     // Save to localStorage
-    localStorage.setItem('verification_settings', JSON.stringify(settings));
+    localStorage.setItem("verification_settings", JSON.stringify(settings));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   const handleReset = () => {
     setSettings(defaultSettings);
-    localStorage.setItem('verification_settings', JSON.stringify(defaultSettings));
+    localStorage.setItem(
+      "verification_settings",
+      JSON.stringify(defaultSettings),
+    );
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   const updateSetting = (key: string, value: any) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   return (
@@ -97,23 +100,36 @@ export default function SettingsPage() {
                 <Sliders className="w-5 h-5 text-primary-400" />
               </div>
               <div>
-                <h2 className="font-semibold text-dark-text">Verification Settings</h2>
-                <p className="text-sm text-dark-muted">Configure how claims are verified</p>
+                <h2 className="font-semibold text-dark-text">
+                  Verification Settings
+                </h2>
+                <p className="text-sm text-dark-muted">
+                  Configure how claims are verified
+                </p>
               </div>
             </div>
             <div className="p-6 space-y-6">
               {/* Confidence Threshold */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="font-medium text-dark-text">Confidence Threshold</label>
-                  <span className="text-sm text-primary-400">{(settings.confidenceThreshold * 100).toFixed(0)}%</span>
+                  <label className="font-medium text-dark-text">
+                    Confidence Threshold
+                  </label>
+                  <span className="text-sm text-primary-400">
+                    {(settings.confidenceThreshold * 100).toFixed(0)}%
+                  </span>
                 </div>
                 <input
                   type="range"
                   min="0"
                   max="100"
                   value={settings.confidenceThreshold * 100}
-                  onChange={(e) => updateSetting('confidenceThreshold', parseInt(e.target.value) / 100)}
+                  onChange={(e) =>
+                    updateSetting(
+                      "confidenceThreshold",
+                      parseInt(e.target.value) / 100,
+                    )
+                  }
                   className="w-full h-2 bg-dark-border rounded-full appearance-none cursor-pointer slider"
                 />
                 <p className="text-xs text-dark-muted mt-1">
@@ -123,11 +139,18 @@ export default function SettingsPage() {
 
               {/* Max Claims */}
               <div>
-                <label className="block font-medium text-dark-text mb-2">Max Claims per Document</label>
+                <label className="block font-medium text-dark-text mb-2">
+                  Max Claims per Document
+                </label>
                 <input
                   type="number"
                   value={settings.maxClaimsPerDocument}
-                  onChange={(e) => updateSetting('maxClaimsPerDocument', parseInt(e.target.value))}
+                  onChange={(e) =>
+                    updateSetting(
+                      "maxClaimsPerDocument",
+                      parseInt(e.target.value),
+                    )
+                  }
                   className="input-field w-32"
                 />
                 <p className="text-xs text-dark-muted mt-1">
@@ -141,19 +164,19 @@ export default function SettingsPage() {
                   label="Auto-generate Corrections"
                   description="Automatically suggest corrections for hallucinated content"
                   enabled={settings.enableCorrections}
-                  onChange={(v) => updateSetting('enableCorrections', v)}
+                  onChange={(v) => updateSetting("enableCorrections", v)}
                 />
                 <ToggleOption
                   label="Semantic Similarity Matching"
                   description="Use embedding-based matching for better evidence retrieval"
                   enabled={settings.enableSemanticMatching}
-                  onChange={(v) => updateSetting('enableSemanticMatching', v)}
+                  onChange={(v) => updateSetting("enableSemanticMatching", v)}
                 />
                 <ToggleOption
                   label="Show Unverifiable Claims"
                   description="Display claims that cannot be verified against sources"
                   enabled={settings.showUnverifiable}
-                  onChange={(v) => updateSetting('showUnverifiable', v)}
+                  onChange={(v) => updateSetting("showUnverifiable", v)}
                 />
               </div>
             </div>
@@ -171,23 +194,29 @@ export default function SettingsPage() {
                 <Palette className="w-5 h-5 text-purple-400" />
               </div>
               <div>
-                <h2 className="font-semibold text-dark-text">Display Settings</h2>
-                <p className="text-sm text-dark-muted">Customize the interface appearance</p>
+                <h2 className="font-semibold text-dark-text">
+                  Display Settings
+                </h2>
+                <p className="text-sm text-dark-muted">
+                  Customize the interface appearance
+                </p>
               </div>
             </div>
             <div className="p-6 space-y-6">
               {/* Theme Selection */}
               <div>
-                <label className="block font-medium text-dark-text mb-3">Theme</label>
+                <label className="block font-medium text-dark-text mb-3">
+                  Theme
+                </label>
                 <div className="flex gap-3">
-                  {['dark', 'light', 'system'].map((theme) => (
+                  {["dark", "light", "system"].map((theme) => (
                     <button
                       key={theme}
-                      onClick={() => updateSetting('theme', theme)}
+                      onClick={() => updateSetting("theme", theme)}
                       className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-all ${
                         settings.theme === theme
-                          ? 'bg-primary-500 text-white'
-                          : 'bg-dark-card border border-dark-border text-dark-muted hover:text-dark-text'
+                          ? "bg-primary-500 text-white"
+                          : "bg-dark-card border border-dark-border text-dark-muted hover:text-dark-text"
                       }`}
                     >
                       {theme}
@@ -202,19 +231,19 @@ export default function SettingsPage() {
                   label="Show Confidence Percentages"
                   description="Display numerical confidence values"
                   enabled={settings.showConfidencePercent}
-                  onChange={(v) => updateSetting('showConfidencePercent', v)}
+                  onChange={(v) => updateSetting("showConfidencePercent", v)}
                 />
                 <ToggleOption
                   label="Click-to-Scroll Navigation"
                   description="Clicking a claim scrolls to its source evidence"
                   enabled={settings.enableClickToScroll}
-                  onChange={(v) => updateSetting('enableClickToScroll', v)}
+                  onChange={(v) => updateSetting("enableClickToScroll", v)}
                 />
                 <ToggleOption
                   label="Highlight Source Paragraphs"
                   description="Visually highlight the relevant source content"
                   enabled={settings.highlightSource}
-                  onChange={(v) => updateSetting('highlightSource', v)}
+                  onChange={(v) => updateSetting("highlightSource", v)}
                 />
               </div>
             </div>
@@ -232,8 +261,12 @@ export default function SettingsPage() {
                 <Database className="w-5 h-5 text-orange-400" />
               </div>
               <div>
-                <h2 className="font-semibold text-dark-text">System Settings</h2>
-                <p className="text-sm text-dark-muted">Advanced configuration options</p>
+                <h2 className="font-semibold text-dark-text">
+                  System Settings
+                </h2>
+                <p className="text-sm text-dark-muted">
+                  Advanced configuration options
+                </p>
               </div>
             </div>
             <div className="p-6 space-y-4">
@@ -241,13 +274,13 @@ export default function SettingsPage() {
                 label="Enable Notifications"
                 description="Receive alerts when verification is complete"
                 enabled={settings.enableNotifications}
-                onChange={(v) => updateSetting('enableNotifications', v)}
+                onChange={(v) => updateSetting("enableNotifications", v)}
               />
               <ToggleOption
                 label="Auto-save Results"
                 description="Automatically save verification results locally"
                 enabled={settings.autoSaveResults}
-                onChange={(v) => updateSetting('autoSaveResults', v)}
+                onChange={(v) => updateSetting("autoSaveResults", v)}
               />
             </div>
           </motion.div>
@@ -258,10 +291,7 @@ export default function SettingsPage() {
               <Save className="w-4 h-4" />
               Save Settings
             </button>
-            <button
-              onClick={handleReset}
-              className="btn-secondary"
-            >
+            <button onClick={handleReset} className="btn-secondary">
               <RefreshCw className="w-4 h-4" />
               Reset to Defaults
             </button>
@@ -292,12 +322,12 @@ function ToggleOption({
       <button
         onClick={() => onChange(!enabled)}
         className={`relative w-12 h-6 rounded-full transition-colors ${
-          enabled ? 'bg-primary-500' : 'bg-dark-border'
+          enabled ? "bg-primary-500" : "bg-dark-border"
         }`}
       >
         <span
           className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
-            enabled ? 'translate-x-7' : 'translate-x-1'
+            enabled ? "translate-x-7" : "translate-x-1"
           }`}
         />
       </button>

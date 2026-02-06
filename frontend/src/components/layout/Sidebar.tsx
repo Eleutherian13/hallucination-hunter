@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 import {
   Search,
   Home,
@@ -12,19 +12,19 @@ import {
   Settings,
   HelpCircle,
   Zap,
-} from 'lucide-react';
+} from "lucide-react";
 
 const navigation = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'Verify', href: '/verify', icon: Search },
-  { name: 'Results', href: '/results', icon: FileText },
-  { name: 'Pipeline', href: '/pipeline', icon: GitBranch },
-  { name: 'Benchmarks', href: '/benchmarks', icon: BarChart3 },
+  { name: "Home", href: "/", icon: Home },
+  { name: "Verify", href: "/verify", icon: Search },
+  { name: "Results", href: "/results", icon: FileText },
+  { name: "Pipeline", href: "/pipeline", icon: GitBranch },
+  { name: "Benchmarks", href: "/benchmarks", icon: BarChart3 },
 ];
 
 const secondaryNav = [
-  { name: 'Settings', href: '/settings', icon: Settings },
-  { name: 'Documentation', href: '/docs', icon: HelpCircle },
+  { name: "Settings", href: "/settings", icon: Settings },
+  { name: "Documentation", href: "/docs", icon: HelpCircle },
 ];
 
 export default function Sidebar() {
@@ -60,7 +60,7 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
-              className={isActive ? 'nav-link-active' : 'nav-link'}
+              className={isActive ? "nav-link-active" : "nav-link"}
             >
               <item.icon className="w-5 h-5" />
               {item.name}
@@ -84,7 +84,7 @@ export default function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={isActive ? 'nav-link-active' : 'nav-link'}
+                className={isActive ? "nav-link-active" : "nav-link"}
               >
                 <item.icon className="w-5 h-5" />
                 {item.name}
@@ -97,7 +97,9 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="p-4 border-t border-dark-border">
         <div className="glass-card p-4 text-center">
-          <p className="text-sm font-medium text-dark-text mb-1">E-Summit '26</p>
+          <p className="text-sm font-medium text-dark-text mb-1">
+            E-Summit '26
+          </p>
           <p className="text-xs text-dark-muted">DataForge Track 1</p>
         </div>
       </div>

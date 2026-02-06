@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, File, X, FileText, FileCheck } from 'lucide-react';
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { motion, AnimatePresence } from "framer-motion";
+import { Upload, File, X, FileText, FileCheck } from "lucide-react";
 
 interface FileUploadProps {
   onFilesSelected: (files: File[]) => void;
@@ -16,7 +16,7 @@ interface FileUploadProps {
 
 export function FileUpload({
   onFilesSelected,
-  acceptedTypes = ['.txt', '.pdf', '.docx'],
+  acceptedTypes = [".txt", ".pdf", ".docx"],
   multiple = true,
   label,
   description,
@@ -30,7 +30,7 @@ export function FileUpload({
       setFiles(newFiles);
       onFilesSelected(newFiles);
     },
-    [files, multiple, onFilesSelected]
+    [files, multiple, onFilesSelected],
   );
 
   const removeFile = (index: number) => {
@@ -39,21 +39,23 @@ export function FileUpload({
     onFilesSelected(newFiles);
   };
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    onDrop,
-    accept: {
-      'text/plain': ['.txt'],
-      'application/pdf': ['.pdf'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-    },
-    multiple,
-    maxSize,
-  });
+  const { getRootProps, getInputProps, isDragActive, isDragReject } =
+    useDropzone({
+      onDrop,
+      accept: {
+        "text/plain": [".txt"],
+        "application/pdf": [".pdf"],
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+          [".docx"],
+      },
+      multiple,
+      maxSize,
+    });
 
   const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   };
 
   return (
@@ -66,7 +68,7 @@ export function FileUpload({
         {files.length > 0 && (
           <span className="badge-verified">
             <FileCheck className="w-4 h-4" />
-            {files.length} file{files.length !== 1 ? 's' : ''} selected
+            {files.length} file{files.length !== 1 ? "s" : ""} selected
           </span>
         )}
       </div>
@@ -77,32 +79,35 @@ export function FileUpload({
         whileTap={{ scale: 0.99 }}
         className={`
           relative border-2 border-dashed rounded-2xl p-8 transition-all duration-200 cursor-pointer
-          ${isDragActive && !isDragReject ? 'border-primary-500 bg-primary-500/10' : ''}
-          ${isDragReject ? 'border-hallucination bg-hallucination/10' : ''}
-          ${!isDragActive ? 'border-dark-border hover:border-primary-500/50 hover:bg-dark-card/50' : ''}
+          ${isDragActive && !isDragReject ? "border-primary-500 bg-primary-500/10" : ""}
+          ${isDragReject ? "border-hallucination bg-hallucination/10" : ""}
+          ${!isDragActive ? "border-dark-border hover:border-primary-500/50 hover:bg-dark-card/50" : ""}
         `}
       >
         <input {...getInputProps()} />
-        
+
         <div className="flex flex-col items-center text-center">
           <motion.div
             animate={{ y: isDragActive ? -5 : 0 }}
             className={`
               w-16 h-16 rounded-2xl flex items-center justify-center mb-4
-              ${isDragActive ? 'bg-primary-500/20' : 'bg-dark-card'}
+              ${isDragActive ? "bg-primary-500/20" : "bg-dark-card"}
             `}
           >
-            <Upload className={`w-8 h-8 ${isDragActive ? 'text-primary-400' : 'text-dark-muted'}`} />
+            <Upload
+              className={`w-8 h-8 ${isDragActive ? "text-primary-400" : "text-dark-muted"}`}
+            />
           </motion.div>
-          
+
           <p className="text-dark-text font-medium mb-1">
-            {isDragActive ? 'Drop files here' : 'Drag & drop files here'}
+            {isDragActive ? "Drop files here" : "Drag & drop files here"}
           </p>
           <p className="text-sm text-dark-muted">
             or <span className="text-primary-400">browse</span> to upload
           </p>
           <p className="text-xs text-dark-muted mt-2">
-            Supported: {acceptedTypes.join(', ')} (Max {formatFileSize(maxSize)})
+            Supported: {acceptedTypes.join(", ")} (Max {formatFileSize(maxSize)}
+            )
           </p>
         </div>
       </motion.div>
@@ -112,7 +117,7 @@ export function FileUpload({
         {files.length > 0 && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             className="space-y-2"
           >
@@ -129,8 +134,12 @@ export function FileUpload({
                     <FileText className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-dark-text">{file.name}</p>
-                    <p className="text-xs text-dark-muted">{formatFileSize(file.size)}</p>
+                    <p className="text-sm font-medium text-dark-text">
+                      {file.name}
+                    </p>
+                    <p className="text-xs text-dark-muted">
+                      {formatFileSize(file.size)}
+                    </p>
                   </div>
                 </div>
                 <button
@@ -178,9 +187,7 @@ export function TextInput({
           <p className="text-sm text-dark-muted">{description}</p>
         </div>
         {wordCount > 0 && (
-          <span className="text-sm text-dark-muted">
-            {wordCount} words
-          </span>
+          <span className="text-sm text-dark-muted">{wordCount} words</span>
         )}
       </div>
 

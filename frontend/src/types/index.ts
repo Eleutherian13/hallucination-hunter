@@ -19,7 +19,7 @@ export interface Paragraph {
 export interface Claim {
   id: string;
   text: string;
-  status: 'verified' | 'hallucination' | 'unverified';
+  status: "verified" | "hallucination" | "unverified";
   confidence: number;
   sourceDocId?: string;
   sourceParagraphIdx?: number;
@@ -47,7 +47,7 @@ export interface PipelineStep {
   id: string;
   name: string;
   description: string;
-  status: 'pending' | 'processing' | 'completed' | 'error';
+  status: "pending" | "processing" | "completed" | "error";
   progress: number;
   details?: string;
   duration?: number;
@@ -72,8 +72,8 @@ export interface BenchmarkSample {
   question?: string;
   context?: string;
   response: string;
-  groundTruth: 'hallucinated' | 'not_hallucinated';
-  prediction: 'hallucinated' | 'not_hallucinated';
+  groundTruth: "hallucinated" | "not_hallucinated";
+  prediction: "hallucinated" | "not_hallucinated";
   confidence: number;
   isCorrect: boolean;
 }

@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
-import { Layout } from '@/components/layout';
-import { FileUpload, TextInput, ProgressSteps, LoadingSpinner } from '@/components/ui';
-import { verifyDocument } from '@/lib/api';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { motion } from "framer-motion";
+import { Layout } from "@/components/layout";
+import {
+  FileUpload,
+  TextInput,
+  ProgressSteps,
+  LoadingSpinner,
+} from "@/components/ui";
+import { verifyDocument } from "@/lib/api";
 import {
   Upload,
   FileText,
@@ -14,23 +19,23 @@ import {
   ArrowRight,
   CheckCircle,
   AlertTriangle,
-} from 'lucide-react';
+} from "lucide-react";
 
 const pipelineSteps = [
-  { name: 'Upload', status: 'pending' as const },
-  { name: 'Ingest', status: 'pending' as const },
-  { name: 'Extract', status: 'pending' as const },
-  { name: 'Retrieve', status: 'pending' as const },
-  { name: 'Verify', status: 'pending' as const },
-  { name: 'Score', status: 'pending' as const },
-  { name: 'Complete', status: 'pending' as const },
+  { name: "Upload", status: "pending" as const },
+  { name: "Ingest", status: "pending" as const },
+  { name: "Extract", status: "pending" as const },
+  { name: "Retrieve", status: "pending" as const },
+  { name: "Verify", status: "pending" as const },
+  { name: "Score", status: "pending" as const },
+  { name: "Complete", status: "pending" as const },
 ];
 
 export default function VerifyPage() {
   const router = useRouter();
   const [sourceFiles, setSourceFiles] = useState<File[]>([]);
-  const [llmOutput, setLlmOutput] = useState('');
-  const [inputMethod, setInputMethod] = useState<'paste' | 'upload'>('paste');
+  const [llmOutput, setLlmOutput] = useState("");
+  const [inputMethod, setInputMethod] = useState<"paste" | "upload">("paste");
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
@@ -43,28 +48,42 @@ export default function VerifyPage() {
 
   const handleVerify = async () => {
     if (!canVerify) return;
-    
+
     setIsProcessing(true);
     setError(null);
     setProgress(0);
     setCurrentStep(0);
-    
+
     try {
       // Update progress through pipeline steps
       const stepIntervals = [0, 15, 30, 50, 70, 85, 100];
-      const stepNames = ['Uploading files...', 'Ingesting documents...', 'Extracting claims...', 
-                         'Retrieving evidence...', 'Verifying claims...', 'Scoring results...', 'Complete!'];
-      
+      const stepNames = [
+        "Uploading files...",
+        "Ingesting documents...",
+        "Extracting claims...",
+        "Retrieving evidence...",
+        "Verifying claims...",
+        "Scoring results...",
+        "Complete!",
+      ];
+
       // Simulate progress updates
       const progressInterval = setInterval(() => {
-        setProgress(prev => {
+        setProgress((prev) => {
           const nextStep = Math.floor((prev / 100) * steps.length);
           if (nextStep < steps.length) {
             setCurrentStep(nextStep);
-            setSteps(prevSteps => prevSteps.map((step, idx) => ({
-              ...step,
-              status: idx < nextStep ? 'completed' : idx === nextStep ? 'processing' : 'pending'
-            })));
+            setSteps((prevSteps) =>
+              prevSteps.map((step, idx) => ({
+                ...step,
+                status:
+                  idx < nextStep
+                    ? "completed"
+                    : idx === nextStep
+                      ? "processing"
+                      : "pending",
+              })),
+            );
           }
           return Math.min(prev + 5, 95);
         });
@@ -72,13 +91,15 @@ export default function VerifyPage() {
 
       // Call the actual backend API
       // Load settings from localStorage
-      const storedSettings = localStorage.getItem('verification_settings');
-      const settings = storedSettings ? JSON.parse(storedSettings) : {
-        confidenceThreshold: 0.7,
-        enableCorrections: true,
-        enableSemanticMatching: true,
-        maxClaimsPerDocument: 50,
-      };
+      const storedSettings = localStorage.getItem("verification_settings");
+      const settings = storedSettings
+        ? JSON.parse(storedSettings)
+        : {
+            confidenceThreshold: 0.7,
+            enableCorrections: true,
+            enableSemanticMatching: true,
+            maxClaimsPerDocument: 50,
+          };
 
       const result = await verifyDocument(
         sourceFiles,
@@ -91,27 +112,37 @@ export default function VerifyPage() {
         },
         (prog, step) => {
           setProgress(Math.max(progress, prog));
-        }
+        },
       );
 
       clearInterval(progressInterval);
-      
+
       // Mark all steps as completed
       setProgress(100);
-      setSteps(prev => prev.map(step => ({ ...step, status: 'completed' as const })));
-      
+      setSteps((prev) =>
+        prev.map((step) => ({ ...step, status: "completed" as const })),
+      );
+
       // Store result with ID-based key for results page
-      console.log('Storing verification result:', result);
-      sessionStorage.setItem(`verification_result_${result.id}`, JSON.stringify(result));
-      sessionStorage.setItem('latestVerificationResult', JSON.stringify(result));
-      
-      await new Promise(resolve => setTimeout(resolve, 500));
-      console.log('Navigating to results page with ID:', result.id);
+      console.log("Storing verification result:", result);
+      sessionStorage.setItem(
+        `verification_result_${result.id}`,
+        JSON.stringify(result),
+      );
+      sessionStorage.setItem(
+        "latestVerificationResult",
+        JSON.stringify(result),
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log("Navigating to results page with ID:", result.id);
       await router.push(`/results?id=${result.id}`);
-      
     } catch (err: any) {
-      console.error('Verification error:', err);
-      setError(err.message || 'Verification failed. Please ensure the backend is running on http://localhost:8000');
+      console.error("Verification error:", err);
+      setError(
+        err.message ||
+          "Verification failed. Please ensure the backend is running on http://localhost:8000",
+      );
       setIsProcessing(false);
       setSteps(pipelineSteps);
       setProgress(0);
@@ -134,10 +165,12 @@ Blood pressure targets for patients with diabetes should be <130/80 mmHg. First-
 
 Statin therapy is recommended for all adults with diabetes aged 40-75 years. High-intensity statin therapy should be used for patients with established ASCVD.`;
 
-    const blob = new Blob([demoText], { type: 'text/plain' });
-    const file = new File([blob], 'ADA_Guidelines_2024.txt', { type: 'text/plain' });
+    const blob = new Blob([demoText], { type: "text/plain" });
+    const file = new File([blob], "ADA_Guidelines_2024.txt", {
+      type: "text/plain",
+    });
     setSourceFiles([file]);
-    
+
     setLlmOutput(`Based on the ADA Guidelines for Type 2 Diabetes Management 2024, here is a summary of the key recommendations:
 
 For diagnosis, diabetes is confirmed when HbA1c is ≥6.5% or fasting glucose is ≥126 mg/dL. Patients should be screened for complications annually including retinopathy and nephropathy.
@@ -172,9 +205,10 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
           <div>
             <h3 className="font-semibold text-dark-text mb-1">How It Works</h3>
             <p className="text-sm text-dark-muted leading-relaxed">
-              Upload your source documents (medical guidelines, legal acts, technical manuals) and the 
-              LLM-generated summary you want to verify. Our 8-layer pipeline will analyze each claim, 
-              highlight hallucinations, and provide citations and corrections.
+              Upload your source documents (medical guidelines, legal acts,
+              technical manuals) and the LLM-generated summary you want to
+              verify. Our 8-layer pipeline will analyze each claim, highlight
+              hallucinations, and provide citations and corrections.
             </p>
           </div>
         </div>
@@ -196,7 +230,9 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
               >
                 <FileText className="w-10 h-10 text-white" />
               </motion.div>
-              <h2 className="text-2xl font-bold text-dark-text mb-2">Processing Your Documents</h2>
+              <h2 className="text-2xl font-bold text-dark-text mb-2">
+                Processing Your Documents
+              </h2>
               <p className="text-dark-muted">
                 Running through our 8-layer verification pipeline...
               </p>
@@ -205,7 +241,9 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
             <div className="mb-8">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-dark-muted">Progress</span>
-                <span className="text-sm font-medium text-primary-400">{progress}%</span>
+                <span className="text-sm font-medium text-primary-400">
+                  {progress}%
+                </span>
               </div>
               <div className="h-2 bg-dark-border rounded-full overflow-hidden">
                 <motion.div
@@ -232,7 +270,7 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
               label="📚 Source Knowledge Base"
               description="Upload PDF/Text documents (medical guidelines, legal acts, etc.)"
               onFilesSelected={setSourceFiles}
-              acceptedTypes={['.txt', '.pdf', '.docx']}
+              acceptedTypes={[".txt", ".pdf", ".docx"]}
               multiple={true}
             />
           </motion.div>
@@ -246,21 +284,21 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
             <div className="mb-6">
               <div className="flex items-center gap-4 mb-4">
                 <button
-                  onClick={() => setInputMethod('paste')}
+                  onClick={() => setInputMethod("paste")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    inputMethod === 'paste'
-                      ? 'bg-primary-500 text-white'
-                      : 'bg-dark-card text-dark-muted hover:text-dark-text'
+                    inputMethod === "paste"
+                      ? "bg-primary-500 text-white"
+                      : "bg-dark-card text-dark-muted hover:text-dark-text"
                   }`}
                 >
                   Paste Text
                 </button>
                 <button
-                  onClick={() => setInputMethod('upload')}
+                  onClick={() => setInputMethod("upload")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    inputMethod === 'upload'
-                      ? 'bg-primary-500 text-white'
-                      : 'bg-dark-card text-dark-muted hover:text-dark-text'
+                    inputMethod === "upload"
+                      ? "bg-primary-500 text-white"
+                      : "bg-dark-card text-dark-muted hover:text-dark-text"
                   }`}
                 >
                   Upload File
@@ -268,7 +306,7 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
               </div>
             </div>
 
-            {inputMethod === 'paste' ? (
+            {inputMethod === "paste" ? (
               <TextInput
                 label="🤖 LLM Output"
                 description="Paste the AI-generated text you want to verify"
@@ -285,12 +323,12 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
                   if (files.length > 0) {
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                      setLlmOutput(e.target?.result as string || '');
+                      setLlmOutput((e.target?.result as string) || "");
                     };
                     reader.readAsText(files[0]);
                   }
                 }}
-                acceptedTypes={['.txt', '.md']}
+                acceptedTypes={[".txt", ".md"]}
                 multiple={false}
               />
             )}
@@ -315,13 +353,27 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
         >
           {/* Validation Messages */}
           <div className="flex flex-wrap gap-4 mb-6">
-            <div className={`flex items-center gap-2 text-sm ${hasSourceFiles ? 'text-verified' : 'text-dark-muted'}`}>
-              {hasSourceFiles ? <CheckCircle className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
-              {hasSourceFiles ? `${sourceFiles.length} source file(s) uploaded` : 'Upload source documents'}
+            <div
+              className={`flex items-center gap-2 text-sm ${hasSourceFiles ? "text-verified" : "text-dark-muted"}`}
+            >
+              {hasSourceFiles ? (
+                <CheckCircle className="w-4 h-4" />
+              ) : (
+                <AlertTriangle className="w-4 h-4" />
+              )}
+              {hasSourceFiles
+                ? `${sourceFiles.length} source file(s) uploaded`
+                : "Upload source documents"}
             </div>
-            <div className={`flex items-center gap-2 text-sm ${hasLlmOutput ? 'text-verified' : 'text-dark-muted'}`}>
-              {hasLlmOutput ? <CheckCircle className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
-              {hasLlmOutput ? 'LLM output provided' : 'Provide LLM output'}
+            <div
+              className={`flex items-center gap-2 text-sm ${hasLlmOutput ? "text-verified" : "text-dark-muted"}`}
+            >
+              {hasLlmOutput ? (
+                <CheckCircle className="w-4 h-4" />
+              ) : (
+                <AlertTriangle className="w-4 h-4" />
+              )}
+              {hasLlmOutput ? "LLM output provided" : "Provide LLM output"}
             </div>
           </div>
 
@@ -342,7 +394,7 @@ All patients aged 40-75 should receive statin therapy for cardiovascular protect
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
-              onClick={() => router.push('/results?demo=true')}
+              onClick={() => router.push("/results?demo=true")}
               className="btn-secondary"
             >
               View Demo Results

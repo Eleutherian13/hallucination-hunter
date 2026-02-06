@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Layout } from '@/components/layout';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Layout } from "@/components/layout";
 import {
   BookOpen,
   Code,
@@ -18,12 +18,12 @@ import {
   Layers,
   Target,
   Search,
-} from 'lucide-react';
+} from "lucide-react";
 
 const sections = [
   {
-    id: 'getting-started',
-    title: 'Getting Started',
+    id: "getting-started",
+    title: "Getting Started",
     icon: Zap,
     content: `
 ## Quick Start Guide
@@ -65,8 +65,8 @@ npm run dev
     `,
   },
   {
-    id: 'features',
-    title: 'Features',
+    id: "features",
+    title: "Features",
     icon: Target,
     content: `
 ## Core Features
@@ -103,8 +103,8 @@ Every flag comes with:
     `,
   },
   {
-    id: 'pipeline',
-    title: 'Pipeline Architecture',
+    id: "pipeline",
+    title: "Pipeline Architecture",
     icon: GitBranch,
     content: `
 ## 8-Layer Verification Pipeline
@@ -160,8 +160,8 @@ Result formatting
     `,
   },
   {
-    id: 'api',
-    title: 'API Reference',
+    id: "api",
+    title: "API Reference",
     icon: Code,
     content: `
 ## REST API
@@ -214,8 +214,8 @@ Response: { "status": "ok", "version": "2.0.0" }
     `,
   },
   {
-    id: 'benchmarks',
-    title: 'Benchmarks',
+    id: "benchmarks",
+    title: "Benchmarks",
     icon: Layers,
     content: `
 ## Performance Metrics
@@ -251,8 +251,8 @@ Navigate to the **Benchmarks** page and click "Run Benchmark" to test against th
     `,
   },
   {
-    id: 'troubleshooting',
-    title: 'Troubleshooting',
+    id: "troubleshooting",
+    title: "Troubleshooting",
     icon: Shield,
     content: `
 ## Common Issues
@@ -299,7 +299,7 @@ export MAX_CLAIMS=25
 ];
 
 export default function DocsPage() {
-  const [activeSection, setActiveSection] = useState('getting-started');
+  const [activeSection, setActiveSection] = useState("getting-started");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   const copyCode = (code: string) => {
@@ -308,7 +308,7 @@ export default function DocsPage() {
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
-  const currentSection = sections.find(s => s.id === activeSection);
+  const currentSection = sections.find((s) => s.id === activeSection);
 
   return (
     <Layout
@@ -335,8 +335,8 @@ export default function DocsPage() {
                   onClick={() => setActiveSection(section.id)}
                   className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-all ${
                     activeSection === section.id
-                      ? 'bg-primary-500/20 text-primary-400'
-                      : 'text-dark-muted hover:text-dark-text hover:bg-dark-card'
+                      ? "bg-primary-500/20 text-primary-400"
+                      : "text-dark-muted hover:text-dark-text hover:bg-dark-card"
                   }`}
                 >
                   <section.icon className="w-4 h-4" />
@@ -385,52 +385,64 @@ export default function DocsPage() {
 
             {/* Markdown-like content rendering */}
             <div className="prose prose-invert max-w-none">
-              {currentSection?.content.split('\n').map((line, idx) => {
+              {currentSection?.content.split("\n").map((line, idx) => {
                 // Code blocks
-                if (line.trim().startsWith('```')) {
+                if (line.trim().startsWith("```")) {
                   return null; // Handle separately
                 }
-                
+
                 // Headers
-                if (line.startsWith('## ')) {
+                if (line.startsWith("## ")) {
                   return (
-                    <h2 key={idx} className="text-xl font-bold text-dark-text mt-8 mb-4">
-                      {line.replace('## ', '')}
+                    <h2
+                      key={idx}
+                      className="text-xl font-bold text-dark-text mt-8 mb-4"
+                    >
+                      {line.replace("## ", "")}
                     </h2>
                   );
                 }
-                if (line.startsWith('### ')) {
+                if (line.startsWith("### ")) {
                   return (
-                    <h3 key={idx} className="text-lg font-semibold text-dark-text mt-6 mb-3">
-                      {line.replace('### ', '')}
+                    <h3
+                      key={idx}
+                      className="text-lg font-semibold text-dark-text mt-6 mb-3"
+                    >
+                      {line.replace("### ", "")}
                     </h3>
                   );
                 }
-                
+
                 // List items
-                if (line.trim().startsWith('- ')) {
+                if (line.trim().startsWith("- ")) {
                   return (
                     <li key={idx} className="text-dark-muted ml-4 list-disc">
-                      {line.replace(/^-\s+/, '')}
+                      {line.replace(/^-\s+/, "")}
                     </li>
                   );
                 }
-                
+
                 // Numbered lists
                 if (/^\d+\.\s/.test(line.trim())) {
                   return (
                     <li key={idx} className="text-dark-muted ml-4 list-decimal">
-                      {line.replace(/^\d+\.\s/, '')}
+                      {line.replace(/^\d+\.\s/, "")}
                     </li>
                   );
                 }
-                
+
                 // Bold text and inline code
                 if (line.trim()) {
                   const formatted = line
-                    .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-dark-text">$1</strong>')
-                    .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-dark-bg text-primary-400 text-sm">$1</code>');
-                  
+                    .replace(
+                      /\*\*([^*]+)\*\*/g,
+                      '<strong class="text-dark-text">$1</strong>',
+                    )
+                    .replace(
+                      /`([^`]+)`/g,
+                      '<code class="px-1.5 py-0.5 rounded bg-dark-bg text-primary-400 text-sm">$1</code>',
+                    );
+
                   return (
                     <p
                       key={idx}
@@ -439,46 +451,55 @@ export default function DocsPage() {
                     />
                   );
                 }
-                
+
                 return <div key={idx} className="h-2" />;
               })}
 
               {/* Render code blocks */}
-              {currentSection?.content.match(/```[\s\S]*?```/g)?.map((block, idx) => {
-                const lines = block.split('\n');
-                const lang = lines[0].replace('```', '');
-                const code = lines.slice(1, -1).join('\n');
-                
-                return (
-                  <div key={`code-${idx}`} className="relative my-4 rounded-xl overflow-hidden">
-                    <div className="flex items-center justify-between px-4 py-2 bg-dark-bg border-b border-dark-border">
-                      <div className="flex items-center gap-2">
-                        <Terminal className="w-4 h-4 text-dark-muted" />
-                        <span className="text-xs text-dark-muted uppercase">{lang || 'code'}</span>
+              {currentSection?.content
+                .match(/```[\s\S]*?```/g)
+                ?.map((block, idx) => {
+                  const lines = block.split("\n");
+                  const lang = lines[0].replace("```", "");
+                  const code = lines.slice(1, -1).join("\n");
+
+                  return (
+                    <div
+                      key={`code-${idx}`}
+                      className="relative my-4 rounded-xl overflow-hidden"
+                    >
+                      <div className="flex items-center justify-between px-4 py-2 bg-dark-bg border-b border-dark-border">
+                        <div className="flex items-center gap-2">
+                          <Terminal className="w-4 h-4 text-dark-muted" />
+                          <span className="text-xs text-dark-muted uppercase">
+                            {lang || "code"}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => copyCode(code)}
+                          className="flex items-center gap-1 text-xs text-dark-muted hover:text-dark-text transition-colors"
+                        >
+                          {copiedCode === code ? (
+                            <>
+                              <Check className="w-3 h-3 text-verified" />
+                              Copied!
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              Copy
+                            </>
+                          )}
+                        </button>
                       </div>
-                      <button
-                        onClick={() => copyCode(code)}
-                        className="flex items-center gap-1 text-xs text-dark-muted hover:text-dark-text transition-colors"
-                      >
-                        {copiedCode === code ? (
-                          <>
-                            <Check className="w-3 h-3 text-verified" />
-                            Copied!
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3 h-3" />
-                            Copy
-                          </>
-                        )}
-                      </button>
+                      <pre className="p-4 bg-dark-bg overflow-x-auto">
+                        <code className="text-sm text-dark-text font-mono">
+                          {code}
+                        </code>
+                      </pre>
                     </div>
-                    <pre className="p-4 bg-dark-bg overflow-x-auto">
-                      <code className="text-sm text-dark-text font-mono">{code}</code>
-                    </pre>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         </motion.div>

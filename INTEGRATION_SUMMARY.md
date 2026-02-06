@@ -11,6 +11,7 @@ All frontend buttons and features are now **fully functional** and connected to 
 ### 1. **Pipeline Page** ([src/pages/pipeline.tsx](frontend/src/pages/pipeline.tsx))
 
 **Changes:**
+
 - Added `useState` and `useEffect` hooks to fetch real data
 - Created `fetchPipelineData()` function to call `GET /api/pipeline/info`
 - Added icon and color mapping for 8 layers dynamically
@@ -28,6 +29,7 @@ All frontend buttons and features are now **fully functional** and connected to 
 ### 2. **Verify Page** ([src/pages/verify.tsx](frontend/src/pages/verify.tsx))
 
 **Changes:**
+
 - Replaced `simulateProcessing()` with real `verifyDocument()` API call
 - Added proper error handling with "ensure backend is running" message
 - Integrated settings from localStorage (confidence threshold, corrections, etc.)
@@ -43,6 +45,7 @@ All frontend buttons and features are now **fully functional** and connected to 
 ### 3. **Results Page** ([src/pages/results.tsx](frontend/src/pages/results.tsx))
 
 **Changes:**
+
 - Updated `useEffect` to load actual results from sessionStorage
 - Added `handleExport()` function to download JSON reports
 - Connected Export button to download functionality
@@ -55,6 +58,7 @@ All frontend buttons and features are now **fully functional** and connected to 
 ### 4. **Settings Page** ([src/pages/settings.tsx](frontend/src/pages/settings.tsx))
 
 **Changes:**
+
 - Added `useEffect` to load settings from localStorage on mount
 - Updated `handleSave()` to persist settings to localStorage
 - Created `handleReset()` function to restore defaults
@@ -68,6 +72,7 @@ All frontend buttons and features are now **fully functional** and connected to 
 ### 5. **Benchmarks Page** ([src/pages/benchmarks.tsx](frontend/src/pages/benchmarks.tsx))
 
 **Status:** Already connected in previous session
+
 - Calls `POST /api/benchmark/run` with HaluEval dataset
 - Displays real test results (TP, TN, FP, FN, accuracy, etc.)
 - Shows pipeline mode used for testing
@@ -78,12 +83,12 @@ All frontend buttons and features are now **fully functional** and connected to 
 
 ### API Endpoints Connected:
 
-| Endpoint | Method | Connected From | Purpose |
-|----------|--------|---------------|---------|
-| `/api/health` | GET | Health check utility | Server status |
-| `/api/pipeline/info` | GET | Pipeline Page | Get 8 layer details |
-| `/api/verify` | POST | Verify Page | Document verification |
-| `/api/benchmark/run` | POST | Benchmarks Page | HaluEval testing |
+| Endpoint             | Method | Connected From       | Purpose               |
+| -------------------- | ------ | -------------------- | --------------------- |
+| `/api/health`        | GET    | Health check utility | Server status         |
+| `/api/pipeline/info` | GET    | Pipeline Page        | Get 8 layer details   |
+| `/api/verify`        | POST   | Verify Page          | Document verification |
+| `/api/benchmark/run` | POST   | Benchmarks Page      | HaluEval testing      |
 
 ### Data Flow:
 
@@ -162,23 +167,23 @@ The frontend now properly interfaces with all backend layers:
 
 ## Button Functionality Status
 
-| Page | Button/Feature | Status | Backend Call |
-|------|---------------|--------|--------------|
-| **Home** | Start Verification | ✅ | Navigation to /verify |
-| **Home** | View Pipeline | ✅ | Navigation to /pipeline |
-| **Verify** | Upload Files | ✅ | File input handler |
-| **Verify** | Verify Document | ✅ | POST /api/verify |
-| **Verify** | Load Demo Data | ✅ | Local demo data |
-| **Results** | Export Report | ✅ | JSON download |
-| **Results** | New Verification | ✅ | Navigate to /verify |
-| **Results** | Claim Selection | ✅ | Local state update |
-| **Pipeline** | Refresh | ✅ | GET /api/pipeline/info |
-| **Pipeline** | Layer Selection | ✅ | Local state update |
-| **Pipeline** | View Toggle | ✅ | Flow/Grid switch |
-| **Benchmarks** | Run Benchmark | ✅ | POST /api/benchmark/run |
-| **Settings** | Save Settings | ✅ | localStorage write |
-| **Settings** | Reset Defaults | ✅ | localStorage write |
-| **Settings** | All Toggles | ✅ | State updates |
+| Page           | Button/Feature     | Status | Backend Call            |
+| -------------- | ------------------ | ------ | ----------------------- |
+| **Home**       | Start Verification | ✅     | Navigation to /verify   |
+| **Home**       | View Pipeline      | ✅     | Navigation to /pipeline |
+| **Verify**     | Upload Files       | ✅     | File input handler      |
+| **Verify**     | Verify Document    | ✅     | POST /api/verify        |
+| **Verify**     | Load Demo Data     | ✅     | Local demo data         |
+| **Results**    | Export Report      | ✅     | JSON download           |
+| **Results**    | New Verification   | ✅     | Navigate to /verify     |
+| **Results**    | Claim Selection    | ✅     | Local state update      |
+| **Pipeline**   | Refresh            | ✅     | GET /api/pipeline/info  |
+| **Pipeline**   | Layer Selection    | ✅     | Local state update      |
+| **Pipeline**   | View Toggle        | ✅     | Flow/Grid switch        |
+| **Benchmarks** | Run Benchmark      | ✅     | POST /api/benchmark/run |
+| **Settings**   | Save Settings      | ✅     | localStorage write      |
+| **Settings**   | Reset Defaults     | ✅     | localStorage write      |
+| **Settings**   | All Toggles        | ✅     | State updates           |
 
 ---
 
@@ -187,12 +192,14 @@ The frontend now properly interfaces with all backend layers:
 ### 1. Start Both Servers
 
 **Backend:**
+
 ```bash
 cd backend
 uvicorn main:app --reload
 ```
 
 **Frontend:**
+
 ```bash
 cd frontend
 npm run dev
@@ -216,6 +223,7 @@ npm run dev
 ### 3. Expected Console Output
 
 **Backend:**
+
 ```
 ✓ Verification layers loaded successfully
 INFO: Application startup complete.
@@ -225,6 +233,7 @@ INFO: "POST /api/benchmark/run HTTP/1.1" 200 OK
 ```
 
 **Frontend (Browser Console):**
+
 ```
 No errors should appear
 All API calls should return 200 status
@@ -235,27 +244,32 @@ All API calls should return 200 status
 ## Key Features Implemented
 
 ### ✅ Real-Time Pipeline Visualization
+
 - Fetches current layer status
 - Shows processing metrics
 - Refresh on demand
 
 ### ✅ Document Verification
+
 - Multi-file upload
 - Progress tracking
 - Error handling
 - Results persistence
 
 ### ✅ HaluEval Benchmarking
+
 - 20-sample testing (extendable to 500)
 - Confusion matrix display
 - Performance metrics (accuracy, precision, recall, F1)
 
 ### ✅ Settings Management
+
 - localStorage persistence
 - Default reset
 - Integration with verification
 
 ### ✅ Export Functionality
+
 - JSON report generation
 - Structured data format
 - Timestamp inclusion
@@ -302,6 +316,7 @@ All API calls should return 200 status
 **All frontend buttons are now fully functional and properly connected to the 8-layer backend verification pipeline.**
 
 The system is ready for:
+
 - ✅ End-to-end testing
 - ✅ Demonstration
 - ✅ Production deployment

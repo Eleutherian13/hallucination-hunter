@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Bell, Search, User, ChevronDown } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Bell, Search, User, ChevronDown } from "lucide-react";
 
 interface HeaderProps {
   title: string;

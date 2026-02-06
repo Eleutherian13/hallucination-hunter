@@ -5,11 +5,13 @@
 ### Layer-by-Layer Verification
 
 #### **Layer 1: Ingestion Layer** ✅ ACTIVE
+
 - **File**: `src/layers/ingestion.py`
 - **Class**: `IngestionLayer`
 - **Called from**: `verification_service.py` → `process_source_document()`
 - **Function**: Parses documents, extracts paragraphs, splits into chunks
 - **Code trace**:
+
   ```python
   # backend/main.py line 388
   processed = service.process_source_document(
@@ -17,49 +19,57 @@
       filename=doc.name,
       file_type=doc.file_type
   )
-  
+
   # verification_service.py line 137
   result = self.ingestion_layer.process_document(...)
   ```
+
 - **Output**: ProcessedSource with chunks and paragraphs
 
 ---
 
 #### **Layer 2: Claim Intelligence/Extraction Layer** ✅ ACTIVE
+
 - **File**: `src/layers/claim_intelligence.py`
 - **Class**: `ClaimIntelligenceLayer`
 - **Called from**: `verification_service.py` → `extract_claims_from_text()`
 - **Function**: Extracts verifiable claims from LLM output
 - **Code trace**:
+
   ```python
   # verification_service.py line 370
   claims_data = self.extract_claims_from_text(llm_output)
-  
+
   # verification_service.py line 192
   claims = self.claim_layer.extract_claims(text)
   ```
+
 - **Output**: List of claim objects with metadata
 
 ---
 
 #### **Layer 3: Retrieval Layer** ✅ ACTIVE
+
 - **File**: `src/layers/retrieval.py`
 - **Class**: `RetrievalLayer`
 - **Called from**: `verification_service.py` → `_find_relevant_chunks()`
 - **Function**: Semantic search to find relevant source material
 - **Code trace**:
+
   ```python
   # verification_service.py line 247
   relevant_chunks = self._find_relevant_chunks(claim_text, source_chunks)
-  
+
   # Uses retrieval layer for semantic matching
   # Falls back to keyword matching if embedding search fails
   ```
+
 - **Output**: Ranked list of relevant source chunks
 
 ---
 
 #### **Layer 4: Verification Layer** ✅ ACTIVE
+
 - **File**: `src/layers/verification.py`
 - **Class**: `VerificationLayer`
 - **Called from**: `verification_service.py` → `verify_claim()`
@@ -77,6 +87,7 @@
 ---
 
 #### **Layer 5: Drift Detection Layer** ⚠️ PARTIALLY INTEGRATED
+
 - **File**: `src/layers/drift_detection.py`
 - **Class**: `DriftDetectionLayer`
 - **Status**: Layer exists but not explicitly called in current pipeline
@@ -86,43 +97,50 @@
 ---
 
 #### **Layer 6: Scoring Layer** ✅ ACTIVE
+
 - **File**: `src/layers/scoring.py`
 - **Class**: `ScoringLayer`
 - **Called from**: `verification_service.py` → `calculate_overall_confidence()`
 - **Function**: Aggregates confidence scores, calculates final metrics
 - **Code trace**:
+
   ```python
   # verification_service.py line 437 (in run_full_verification)
   overall_confidence = self.calculate_overall_confidence(verified_claims)
-  
+
   # verification_service.py line 450
   def calculate_overall_confidence(...)
       # Uses scoring layer for weighted confidence calculation
   ```
+
 - **Output**: Overall confidence score for the entire document
 
 ---
 
 #### **Layer 7: Correction Layer** ✅ ACTIVE
+
 - **File**: `src/layers/correction.py`
 - **Class**: `CorrectionLayer`
 - **Called from**: `verification_service.py` → `generate_correction()`
 - **Function**: Generates suggested corrections for hallucinated content
 - **Code trace**:
+
   ```python
   # verification_service.py line 419
   if status == 'hallucination' and source_snippet:
       correction = self.generate_correction(claim_data['text'], source_snippet)
-  
+
   # verification_service.py line 326
   def generate_correction(...)
       result = self.correction_layer.generate_correction(...)
   ```
+
 - **Output**: Corrected text based on actual source material
 
 ---
 
 #### **Layer 8: Output Formatting Layer** ✅ ACTIVE
+
 - **File**: `src/layers/output_formatting.py`
 - **Class**: `OutputFormattingLayer`
 - **Called from**: `backend/main.py` → Response formatting
@@ -186,6 +204,7 @@ Results displayed in Frontend
 **Location**: `backend/main.py` line 375
 
 **Layers Called**:
+
 1. ✅ Ingestion (line 388-393)
 2. ✅ Claim Extraction (via `run_full_verification`, line 396)
 3. ✅ Retrieval (via `verify_claim`)
@@ -219,6 +238,7 @@ def claim_layer(self) -> ClaimIntelligenceLayer:
 ```
 
 **Benefits**:
+
 - Layers only initialized when needed
 - Reduces memory usage
 - Faster startup time
@@ -243,6 +263,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000
 ## API Endpoint Layer Utilization
 
 ### `GET /api/pipeline/info`
+
 Returns metadata about all 8 layers:
 
 ```json
@@ -263,9 +284,11 @@ Returns metadata about all 8 layers:
 ```
 
 ### `POST /api/verify`
+
 Uses all 7 active layers in sequence (drift available but not in main flow)
 
 ### `POST /api/benchmark/run`
+
 Uses full pipeline for each HaluEval test sample
 
 ---
@@ -273,6 +296,7 @@ Uses full pipeline for each HaluEval test sample
 ## Recommendations
 
 ### ✅ Currently Working:
+
 - All 7 core layers are fully integrated and operational
 - End-to-end verification flows through entire pipeline
 - Frontend displays all 8 layers with status

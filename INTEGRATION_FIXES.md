@@ -3,14 +3,17 @@
 ## Issues Identified and Resolved
 
 ### 1. **Snake_case vs CamelCase Mismatch** ✅ FIXED
+
 **Problem**: Backend returns snake_case (e.g., `total_claims`) but frontend expects camelCase (e.g., `totalClaims`), causing NaN values.
 
 **Solution**: Added `toCamelCase()` transformation function in `api.ts` that automatically converts all API responses:
+
 - Applied to all verification endpoints
-- Applied to all benchmark endpoints  
+- Applied to all benchmark endpoints
 - Applied to pipeline info endpoint
 
 **Files Modified**:
+
 - [`frontend/src/lib/api.ts`](frontend/src/lib/api.ts) - Added transformation layer
 - [`frontend/src/pages/benchmarks.tsx`](frontend/src/pages/benchmarks.tsx) - Simplified to use auto-converted data
 - [`frontend/src/pages/pipeline.tsx`](frontend/src/pages/pipeline.tsx) - Removed redundant conversion
@@ -18,11 +21,13 @@
 ---
 
 ### 2. **Results Page NaN Values** ✅ FIXED
+
 **Problem**: Total Claims, Verified, Hallucinations, Verification Score all showing `NaN%`
 
 **Root Cause**: Property name mismatch between backend response and frontend code
 
 **Solution**: The `toCamelCase()` function now ensures:
+
 ```typescript
 // Backend sends:
 { total_claims: 7, verified_count: 5, ... }
@@ -34,13 +39,16 @@
 ---
 
 ### 3. **Benchmark Button Not Working** ✅ FIXED
+
 **Problem**: Start Benchmark button does nothing when clicked
 
-**Root Cause**: 
+**Root Cause**:
+
 1. Same snake_case/camelCase issue
 2. Complex manual data transformation causing errors
 
 **Solution**:
+
 - Simplified benchmark result handling to use auto-converted data
 - Removed manual field mapping
 - Backend already returns proper structure, just needed conversion
@@ -48,11 +56,13 @@
 ---
 
 ### 4. **Data Flow Integration** ✅ ENHANCED
+
 **Previous State**: Console logging added to track data flow
 
 **Current State**: Complete verification flow from upload → verify → results working:
 
 **Flow**:
+
 ```
 verify.tsx (line 104) → stores to sessionStorage
                      ↓
@@ -70,6 +80,7 @@ results.tsx (line 164) → displays converted data
 ### 1. Verify Both Servers Are Running
 
 **Backend** (Terminal 1):
+
 ```powershell
 cd backend
 ..\venv\Scripts\Activate.ps1
@@ -77,18 +88,21 @@ uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Expected output:
+
 ```
 ✓ Verification layers loaded successfully
 INFO:     Uvicorn running on http://127.0.0.1:8000
 ```
 
 **Frontend** (Terminal 2):
+
 ```powershell
 cd frontend
 npm run dev
 ```
 
 Expected output:
+
 ```
 Local:   http://localhost:3000
 ```
@@ -104,6 +118,7 @@ Local:   http://localhost:3000
    - Or use any `.txt` file
 
 3. **Enter LLM Output**:
+
    ```
    The patient has Type 2 diabetes. HbA1c target should be less than 7%.
    Metformin is recommended as first-line treatment.
@@ -184,20 +199,24 @@ Local:   http://localhost:3000
 ## Backend API Endpoints
 
 ### Verification
+
 - `POST /api/verify` - Upload & verify document
 - `GET /api/verify/demo` - Get demo result
 - `GET /api/verify/{id}` - Get specific result
 
 ### Benchmark
+
 - `POST /api/benchmark/run` - Run HaluEval benchmark
 - `GET /api/benchmark/results` - Get all benchmark results
 - `GET /api/benchmark/{id}` - Get specific benchmark
 
 ### Pipeline
+
 - `GET /api/pipeline/info` - Get all 8 layers metadata
 - `GET /api/pipeline/status` - Get pipeline status
 
 ### Health
+
 - `GET /api/health` - Check backend status
 
 ---
@@ -205,6 +224,7 @@ Local:   http://localhost:3000
 ## Known Current State
 
 ### ✅ Working
+
 - Pipeline page compiles and displays
 - Backend loads all 8 verification layers
 - Frontend compiles all pages
@@ -213,6 +233,7 @@ Local:   http://localhost:3000
 - Navigation between pages
 
 ### ⚙️ To Verify (User Testing Required)
+
 - Actual file upload and processing
 - Real-time verification with all 8 layers
 - Citation generation accuracy
@@ -222,15 +243,18 @@ Local:   http://localhost:3000
 ### 📝 Remaining Tasks (If Issues Found)
 
 **If results still show demo data instead of uploaded files**:
+
 - Check FormData upload in verify.tsx
 - Verify backend receives files correctly
 - Confirm backend processes uploaded content
 
 **If corrections tab is still unreadable**:
+
 - Check CSS styling in results.tsx
 - Verify correction data structure from backend
 
 **If citations are empty**:
+
 - Confirm backend generates citations
 - Check if citation field exists in API response
 
@@ -304,6 +328,7 @@ Local:   http://localhost:3000
 When testing, you should see these console logs:
 
 ### Verify Page
+
 ```javascript
 Storing verification result: {
   id: "ver_abc123",
@@ -316,6 +341,7 @@ Navigating to results page with ID: ver_abc123
 ```
 
 ### Results Page
+
 ```javascript
 Loaded verification result: {
   id: "ver_abc123",
@@ -326,6 +352,7 @@ Loaded verification result: {
 ```
 
 ### Benchmarks Page
+
 ```javascript
 Starting benchmark...
 Calling benchmark API...
@@ -368,6 +395,7 @@ Benchmark response: {
 ## Contact Points
 
 If issues persist:
+
 1. Check browser console (F12) for JavaScript errors
 2. Check backend terminal for Python errors
 3. Verify both servers are running on correct ports

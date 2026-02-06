@@ -3,6 +3,7 @@
 ## ✅ Fully Connected Pages
 
 ### 1. **Pipeline Page** (`/pipeline`)
+
 - ✅ Fetches real layers from backend API (`GET /api/pipeline/info`)
 - ✅ Displays 8 layers dynamically with status, description, metrics
 - ✅ Loading states and error handling
@@ -10,6 +11,7 @@
 - ✅ Shows pipeline mode (full/demo)
 
 ### 2. **Verify Page** (`/verify`)
+
 - ✅ Calls real backend API (`POST /api/verify`)
 - ✅ File upload with FormData
 - ✅ Progress tracking during verification
@@ -19,6 +21,7 @@
 - ✅ Demo data loader creates actual File objects
 
 ### 3. **Results Page** (`/results`)
+
 - ✅ Loads verification results from sessionStorage
 - ✅ Export button downloads JSON report
 - ✅ New Verification button navigates to verify page
@@ -26,6 +29,7 @@
 - ✅ Source document viewer
 
 ### 4. **Benchmarks Page** (`/benchmarks`)
+
 - ✅ Calls HaluEval benchmark API (`POST /api/benchmark/run`)
 - ✅ Displays real test results (TP, TN, FP, FN)
 - ✅ Shows accuracy, precision, recall, F1 scores
@@ -33,6 +37,7 @@
 - ✅ Shows pipeline mode used
 
 ### 5. **Settings Page** (`/settings`)
+
 - ✅ Saves settings to localStorage
 - ✅ Loads settings on mount
 - ✅ Save button persists changes
@@ -41,11 +46,13 @@
 - ✅ Settings are used by verify page
 
 ### 6. **Home Page** (`/`)
+
 - ✅ Navigation links to all pages
 - ✅ Quick start buttons
 - ✅ Feature showcase
 
 ### 7. **Documentation Page** (`/docs`)
+
 - ✅ Static content display
 - ✅ Code examples
 - ✅ API reference
@@ -53,12 +60,14 @@
 ## 🔗 Backend Integration
 
 ### Endpoints Connected:
+
 1. `GET /api/health` - Health check
 2. `GET /api/pipeline/info` - Layer information
 3. `POST /api/verify` - Document verification
 4. `POST /api/benchmark/run` - HaluEval testing
 
 ### Data Flow:
+
 ```
 User → Upload Files → Verify Page → POST /api/verify → Backend Pipeline
                                            ↓
@@ -83,6 +92,7 @@ The backend successfully loads and uses all 8 verification layers:
 ## 🧪 Testing Checklist
 
 ### End-to-End Test:
+
 1. ✅ Start backend: `cd backend && uvicorn main:app --reload`
 2. ✅ Start frontend: `cd frontend && npm run dev`
 3. ✅ Navigate to http://localhost:3000
